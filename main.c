@@ -84,17 +84,12 @@ int main(void)
 		JSON_Set_Float(&json, "milliAmp", current);
 		JSON_Set_Float(&json, "milliWatt", power);
 		
-		const uint16_t buffer_length = JSON_Dictionary_Calc_Buffer_Size(&json);
 		
-		USART_Transmit_String_Debug("Size of buffer will be: ");
-		USART_Transmit_Integer_Debug(buffer_length);
-		USART_Transmit_Char_Debug('\n');
-		
-		char buffer[buffer_length];
+		char buffer[300];
 		
 		USART_Transmit_String_Debug("Serializing JSON...\n");
 		
-		JSON_Serialize_Dictionary(&json, buffer, buffer_length);
+		JSON_Serialize_Dictionary(&json, buffer, 200);
 		
 		USART_Transmit_String(buffer);
 		USART_Transmit_Char('\n');

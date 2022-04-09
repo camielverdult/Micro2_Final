@@ -15,7 +15,7 @@
 #define BAUD 9600
 #define UBBR (F_CPU / 16 / BAUD - 1) // This is 103
 
-const uint8_t print_debug = 1;
+const uint8_t print_debug = 0;
 
 void USART_Initialize(void) {
 	  // Set BAUD rate through calculated UBRR
