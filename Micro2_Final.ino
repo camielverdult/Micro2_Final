@@ -17,23 +17,23 @@
 #include "INA260.h"
 #include "JSON.h"
 
-void TestLeds(void) {
-	USART_Transmit_String("Setting LED strip to red!\n");
-	WS2812_Set(10, 0, 0);
-	_delay_ms(600);
-	
-	USART_Transmit_String("Setting LED strip to green!\n");
-	WS2812_Set(0, 10, 0);
-	_delay_ms(600);
-	
-	USART_Transmit_String("Setting LED strip to blue!\n");
-	WS2812_Set(0, 0, 10);
-	_delay_ms(600);
-	
-	USART_Transmit_String("Setting LED strip to white!\n");
-	WS2812_Set(10, 10, 10);
-	_delay_ms(600);
-}
+//void TestLeds(void) {
+//	USART_Transmit_String("Setting LED strip to red!\n");
+//	WS2812_Set(10, 0, 0);
+//	_delay_ms(600);
+//	
+//	USART_Transmit_String("Setting LED strip to green!\n");
+//	WS2812_Set(0, 10, 0);
+//	_delay_ms(600);
+//	
+//	USART_Transmit_String("Setting LED strip to blue!\n");
+//	WS2812_Set(0, 0, 10);
+//	_delay_ms(600);
+//	
+//	USART_Transmit_String("Setting LED strip to white!\n");
+//	WS2812_Set(10, 10, 10);
+//	_delay_ms(600);
+//}
 
 void TestINA260(void) {
 	float voltage = INA260_Voltage();
@@ -44,9 +44,9 @@ void TestINA260(void) {
 int main(void)
 {
 	// Initialize USART
-	USART_Initialize();
+	// USART_Initialize();
 	 
-	USART_Transmit_String("Starting up...\n");
+	// USART_Transmit_String("Starting up...\n");
 	
 	// Initialize WS2812 strip
 	WS2812_Initialize();
@@ -54,6 +54,7 @@ int main(void)
 	// Initialize INA260 (This will also initialize I2C)
 	INA260_Initialize();
 	
+	Serial.begin(9600);
 	
     while(1)
     {	
@@ -76,26 +77,28 @@ int main(void)
 		
 		WS2812_Set(red, green, blue);
 
-		float voltage = INA260_Voltage();
-		float current = INA260_Current();
-		float power = INA260_Power();
-
-		JSON_Set_Float(&json, "milliVolt", voltage);
-		JSON_Set_Float(&json, "milliAmp", current);
-		JSON_Set_Float(&json, "milliWatt", power);
+		 uint16_t voltage = (uint16_t)(INA260_Voltage());
+		 uint16_t current = (uint16_t)(INA260_Current());
+		 uint16_t power = (uint16_t)(INA260_Power());
+		 
+		 JSON_Set_Integer(&json, "milliVolt", voltage);
+		 JSON_Set_Integer(&json, "milliAmpere", current);
+		 JSON_Set_Integer(&json, "milliWatt", power);
 		
 		
 		char buffer[300];
 		
-		USART_Transmit_String_Debug("Serializing JSON...\n");
+		// USART_Transmit_String_Debug("Serializing JSON...\n");
 		
-		JSON_Serialize_Dictionary(&json, buffer, 200);
+		JSON_Serialize_Dictionary(&json, buffer, 300);
 		
-		USART_Transmit_String(buffer);
-		USART_Transmit_Char('\n');
+		// USART_Transmit_String(buffer);
+		// USART_Transmit_Char('\n');
+		
+		Serial.println(buffer);
 		
 		JSON_Cleanup(&json);
 		
-		_delay_ms(1000);
+		_delay_ms(100);
     }
 }
