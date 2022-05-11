@@ -86,7 +86,7 @@
   <com.microchip.xc8.compiler.optimization.AllocateBytesNeededForEnum>True</com.microchip.xc8.compiler.optimization.AllocateBytesNeededForEnum>
   <com.microchip.xc8.compiler.optimization.DebugLevel>Default (-g2)</com.microchip.xc8.compiler.optimization.DebugLevel>
   <com.microchip.xc8.compiler.warnings.AllWarnings>True</com.microchip.xc8.compiler.warnings.AllWarnings>
-  <com.microchip.xc8.compiler.miscellaneous.OtherFlags>-fsanitize=address</com.microchip.xc8.compiler.miscellaneous.OtherFlags>
+  <com.microchip.xc8.compiler.miscellaneous.OtherFlags>-Wl,-u,vfprintf -lprintf_flt -lm</com.microchip.xc8.compiler.miscellaneous.OtherFlags>
   <com.microchip.xc8.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
@@ -97,9 +97,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BH1750.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="I2C.h">
       <SubType>compile</SubType>
     </Compile>

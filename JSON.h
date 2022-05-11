@@ -65,11 +65,11 @@ uint8_t JSON_String_Valid(const char* string) {
         i++;
         if (i == STRING_LENGTH) {
             // This string is too long or has a broken null-terminator
-            return false;
+            return 0;
         }
     }
 
-    return true;
+    return 1;
 }
 
 void JSON_Set_String(JSONDictionary* dictionary, const char* key, const char* value) {
@@ -117,7 +117,7 @@ void JSON_Set_Float(JSONDictionary* dictionary, const char* key, float value) {
     char buffer[STRING_LENGTH];
     memset(buffer, '\0', STRING_LENGTH);
 
-    // TODO: find a replacement for this for AVR/arduino
+    // Buffer length decides amount of decimals here
     snprintf(buffer, STRING_LENGTH, "%f", value);
 
 	JSON_Set_String(dictionary, key, buffer);
@@ -133,7 +133,7 @@ void JSON_Set_Integer(JSONDictionary* dictionary, const char* key, uint16_t valu
 	char buffer[STRING_LENGTH];
     memset(buffer, '\0', STRING_LENGTH);
 
-    snprintf(buffer, STRING_LENGTH, "%u", value);
+    snprintf(buffer, STRING_LENGTH, "%d", value);
 	JSON_Set_String(dictionary, key, buffer);
 }
 

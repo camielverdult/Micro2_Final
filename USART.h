@@ -30,7 +30,7 @@ void USART_Initialize(void) {
 	  UCSR0C = (0 << UMSEL01) | (0 << UMSEL00) | (0 << UPM01) | (0 << UPM00) | (0 << USBS0) | (1 << UCSZ01) | (1 << UCSZ00);
 }
 
-void USART_Transmit_Char(const unsigned char data)
+void USART_Transmit_Char(const char data)
 {
 	// Wait for the buffer to be empty
 	while(!(UCSR0A & (1 << UDRE0))) {};

@@ -17,45 +17,21 @@
 #include "INA260.h"
 #include "JSON.h"
 
-//void TestLeds(void) {
-//	USART_Transmit_String("Setting LED strip to red!\n");
-//	WS2812_Set(10, 0, 0);
-//	_delay_ms(600);
-//	
-//	USART_Transmit_String("Setting LED strip to green!\n");
-//	WS2812_Set(0, 10, 0);
-//	_delay_ms(600);
-//	
-//	USART_Transmit_String("Setting LED strip to blue!\n");
-//	WS2812_Set(0, 0, 10);
-//	_delay_ms(600);
-//	
-//	USART_Transmit_String("Setting LED strip to white!\n");
-//	WS2812_Set(10, 10, 10);
-//	_delay_ms(600);
-//}
-
-void TestINA260(void) {
-	float voltage = INA260_Voltage();
-	USART_Transmit_Float(voltage);
-	USART_Transmit_String("\n");
-}
-
 int main(void)
 {
 	// Initialize USART
-	// USART_Initialize();
+	//USART_Initialize();
 	 
-	// USART_Transmit_String("Starting up...\n");
+	//USART_Transmit_String("Starting up...\n");
 	
 	// Initialize WS2812 strip
 	WS2812_Initialize();
 	
 	// Initialize INA260 (This will also initialize I2C)
 	INA260_Initialize();
-	
+		
 	Serial.begin(9600);
-	
+		
     while(1)
     {	
         // TODO:: Please write your application code
@@ -67,33 +43,32 @@ int main(void)
 		JSON_Dictionary_Init(&json);
 		
 		uint8_t red = rand() % 255;
-		JSON_Set_Integer(&json, "Red", red);
+		JSON_Set_Integer(&json, (char*)"Red", red);
 		
 		uint8_t green = rand() % 255;
-		JSON_Set_Integer(&json, "Green", green);
+		JSON_Set_Integer(&json, (char*)"Green", green);
 		
 		uint8_t blue = rand() % 255;
-		JSON_Set_Integer(&json, "Blue", blue);
+		JSON_Set_Integer(&json, (char*)"Blue", blue);
 		
 		WS2812_Set(red, green, blue);
 
-		 uint16_t voltage = (uint16_t)(INA260_Voltage());
-		 uint16_t current = (uint16_t)(INA260_Current());
-		 uint16_t power = (uint16_t)(INA260_Power());
+		uint16_t voltage = (uint16_t)(INA260_Voltage());
+		uint16_t current = (uint16_t)(INA260_Current());
+		uint16_t power = (uint16_t)(INA260_Power());
 		 
-		 JSON_Set_Integer(&json, "milliVolt", voltage);
-		 JSON_Set_Integer(&json, "milliAmpere", current);
-		 JSON_Set_Integer(&json, "milliWatt", power);
-		
-		
+		JSON_Set_Integer(&json, (char*)"voltage", voltage);
+		JSON_Set_Integer(&json, (char*)"current", current);
+		JSON_Set_Integer(&json, (char*)"power", power);
+		 
 		char buffer[300];
 		
-		// USART_Transmit_String_Debug("Serializing JSON...\n");
+		USART_Transmit_String_Debug("Serializing JSON...\n");
 		
 		JSON_Serialize_Dictionary(&json, buffer, 300);
 		
-		// USART_Transmit_String(buffer);
-		// USART_Transmit_Char('\n');
+		//USART_Transmit_String(buffer);
+		//USART_Transmit_Char('\n');
 		
 		Serial.println(buffer);
 		
